@@ -3,12 +3,37 @@ import Image from "next/image";
 import axios from "axios";
 import db from "../polybase/config.jsx";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { list } from "postcss";
+import { useAddress } from "@thirdweb-dev/react";
 
 export default function Home() {
+  const address = useAddress();
   // Methods
   const [isProfile, setIsProfile] = useState(false);
+  const [profileData, setProfileData] = useState({});
+
+  useEffect(() => {
+    const getProfile = async () => {
+      const profileInfo = await db
+        .collection("UserCollection")
+        .where("publicKey", "==", address)
+        .get();
+      try {
+        const profileExists = profileInfo.data[0]?.data.publicKey;
+        setProfileData(profileInfo.data[0].data);
+        console.log(profileData);
+        console.log(profileExists);
+        if (profileExists === address) {
+          setIsProfile(true);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getProfile();
+  }, [address]);
 
   const listOfPrperties = [
     {
@@ -43,14 +68,26 @@ export default function Home() {
         {isProfile ? (
           <div className="mb-5">
             <h1 className="text-white text-2xl font-extrabold mb-5">
-              HomeChain Profile
+              HomeChain Buyer Profile
             </h1>
+            <div className="bg-white rounded shadow-lg border border-black p-4">
+              <h2 className="text-xl font-bold mb-2">{profileData.name}</h2>
+              <p className="text-gray-600 mb-2">@{profileData.location}</p>
+              <p className="text-gray-600 mb-2">{profileData.email}</p>
+              <p className="text-gray-800">{profileData.phoneNumber}</p>
+            </div>
           </div>
         ) : (
-          <div className="mb-5">
+          <div className="mb-5 flex flex-col items-center justify-center">
             <h1 className="text-white text-2xl font-extrabold mb-5">
               HomeChain Buyer Profile Create
             </h1>
+            <Link
+              href="/CreateProfile"
+              className="border-4 border-black p-3 bg-white"
+            >
+              Create Profile
+            </Link>
           </div>
         )}
 

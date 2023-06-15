@@ -17,43 +17,34 @@ export default async function handler(req, res) {
         id: string;
         name: string;
         location: string;
-        broker: string;
-        buyer: string;
-        status: string;
+        broker: string;     
         price: number;
         image_link: string;
         address: string;
-        area: string;
-        bedrooms: string;
-        bathrooms: string;
-        garages: string;
-        description: string;
-        amenities: string;
+        area: number;
+        bedrooms: number;
+        bathrooms: number;
+        garages: number;
+        description: string;    
         type: string;
-        posted_by: string;
         posted_on: string;
         
 
-        constructor(id: string, name: string, location: string, broker: string, buyer: string, status: string, price: number, image_link: string, address: string, area: string, bedrooms: string, bathrooms: string, garages: string, description: string, amenities: string, type: string, posted_by: string, posted_on: string) {
-            this.id = id;
-            this.name = name;
-            this.location = location;
-            this.broker = broker;
-            this.buyer = buyer;
-            this.status = status;
-            this.price = price;
-            this.image_link = image_link;
-            this.address = address;
-            this.area = area;
-            this.bedrooms = bedrooms;
-            this.bathrooms = bathrooms;
-            this.garages = garages;
-            this.description = description;
-            this.amenities = amenities;
-            this.type = type;
-            this.posted_by = posted_by;
-            this.posted_on = posted_on;
-
+        constructor(id: string, name: string, location: string, broker: string, price: number, image_link: string, address: string, area: number, bedrooms: number, bathrooms: number, garages: number, description: string, type: string, posted_on: string) {
+          this.id = id;
+          this.name = name;
+          this.location = location;
+          this.broker = broker;
+          this.price = price;
+          this.image_link = image_link;
+          this.address = address;
+          this.area = area;
+          this.bedrooms = bedrooms;
+          this.bathrooms = bathrooms;
+          this.garages = garages;
+          this.description = description;
+          this.type = type;
+          this.posted_on = posted_on;
           
         }
       }

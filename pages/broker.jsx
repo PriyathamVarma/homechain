@@ -3,33 +3,54 @@ import Image from "next/image";
 import axios from "axios";
 import db from "../polybase/config.jsx";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect, use } from "react";
 import { list } from "postcss";
+import { useAddress } from "@thirdweb-dev/react";
 
 export default function Home() {
+  const address = useAddress();
   // Methods
   const [isProfile, setIsProfile] = useState(false);
+  const [profileData, setProfileData] = useState([]);
+  const [propertyData, setPropertyData] = useState([]);
 
-  const listOfPrperties = [
-    {
-      id: "1",
-      name: "Property 1",
-      price: "100000",
-      location: "Location 1",
-      broker: "Broker 1",
-      buyer: "Buyer 1",
-      status: "Status 1",
-    },
-    {
-      id: "2",
-      name: "Property 2",
-      price: "200000",
-      location: "Location 2",
-      broker: "Broker 2",
-      buyer: "Buyer 2",
-      status: "Status 2",
-    },
-  ];
+  useEffect(() => {
+    const getProfile = async () => {
+      const profileInfo = await db
+        .collection("UserCollection")
+        .where("publicKey", "==", address)
+        .get();
+      try {
+        const profileExists = profileInfo.data[0]?.data.publicKey;
+        setProfileData(profileInfo.data[0].data);
+        console.log(profileData);
+        console.log(profileExists);
+        if (profileExists === address) {
+          setIsProfile(true);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getProfile();
+  }, [address]);
+
+  useEffect(() => {
+    const getProperty = async () => {
+      const propertyInfo = await db
+        .collection("PropertyCollection")
+        .where("broker", "==", address)
+        .get();
+      console.log(propertyInfo.data);
+      try {
+        setPropertyData(propertyInfo.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getProperty();
+  }, [address]);
 
   return (
     <div>
@@ -39,41 +60,82 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex flex-col items-center justify-center h-screen bg-primary">
+      <main className="flex flex-col items-center justify-center h-full bg-primary">
         {isProfile ? (
           <div className="mb-5">
             <h1 className="text-white text-2xl font-extrabold mb-5">
-              HomeChain Profile
+              HomeChain Broker Profile
             </h1>
+            <div className="bg-white rounded shadow-lg border border-black p-4">
+              <h2 className="text-xl font-bold mb-2">{profileData.name}</h2>
+              <p className="text-gray-600 mb-2">@{profileData.location}</p>
+              <p className="text-gray-600 mb-2">{profileData.email}</p>
+              <p className="text-gray-800">{profileData.phoneNumber}</p>
+            </div>
+            <div className="m-5">
+              <Link
+                href="/createProperty"
+                className="border-4 border-black p-3 bg-white"
+              >
+                + Add Property
+              </Link>
+            </div>
           </div>
         ) : (
-          <div className="mb-5">
+          <div className="mb-5 flex flex-col items-center justify-center">
             <h1 className="text-white text-2xl font-extrabold mb-5">
-              HomeChain Profile Create
+              HomeChain Broker Profile Create
             </h1>
+            <Link
+              href="/CreateProfile"
+              className="border-4 border-black p-3 bg-white"
+            >
+              Create Profile
+            </Link>
           </div>
         )}
 
-        <div className="m-5">
-          <Link
-            href="/addProperty"
-            className="border-4 border-black p-3 bg-white"
-          >
-            + Add Property
-          </Link>
-        </div>
-
-        <div className="flex flex-row">
-          {listOfPrperties.map((item, index) => (
+        <div className="flex flex-row mb-5">
+          {propertyData?.map((item, index) => (
             <div
               key={index}
               className="h-full mr-10 flex flex-col justify-center items-left"
             >
               <Link
-                href={`/property/${item.id}`}
-                className="font-extrabold text-5xl border-8 border-black p-5"
+                href={`/property/${item.data.id}`}
+                className=" border-2 border-black"
               >
-                {item.name}
+                <div className="bg-white rounded shadow p-4">
+                  <h2 className="text-xl font-semibold mb-2">
+                    #{item.data.id}
+                  </h2>
+                  <img
+                    className="w-full h-48 object-cover mb-4 rounded"
+                    src={item.data.image_link}
+                    alt={item.data.name}
+                  />
+                  <h2 className="text-xl font-semibold mb-2">
+                    {item.data.name}
+                  </h2>
+                  <p className="text-gray-600 mb-2">{item.data.location}</p>
+                  <div className="flex items-center mb-2">
+                    <p className="text-gray-800 mr-2">Price:</p>
+                    <p>{item.data.price}</p>
+                  </div>
+                  <div className="flex items-center mb-2">
+                    <p className="text-gray-800 font-bold mr-2">Bedrooms:</p>
+                    <p>{item.data.bedrooms}</p>
+                  </div>
+                  <div className="flex items-center mb-2">
+                    <p className="text-gray-800 font-bold mr-2">Bathrooms:</p>
+                    <p>{item.data.bathrooms}</p>
+                  </div>
+                  <div className="flex items-center mb-2">
+                    <p className="text-gray-800 font-bold mr-2">Garages:</p>
+                    <p>{item.data.garages}</p>
+                  </div>
+                  <p className="text-gray-800">{item.data.description}</p>
+                </div>
               </Link>
             </div>
           ))}
