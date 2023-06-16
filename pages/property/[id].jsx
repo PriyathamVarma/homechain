@@ -4,7 +4,6 @@ import axios from "axios";
 import db from "../../polybase/config.jsx";
 import Link from "next/link";
 import { useState, useEffect, use } from "react";
-import { list } from "postcss";
 import { useRouter } from "next/router";
 import { useAddress } from "@thirdweb-dev/react";
 

@@ -4,7 +4,6 @@ import axios from "axios";
 import db from "../polybase/config.jsx";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { list } from "postcss";
 import { useAddress } from "@thirdweb-dev/react";
 
 export default function Home() {
