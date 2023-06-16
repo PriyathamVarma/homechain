@@ -59,7 +59,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex flex-col items-center justify-center h-full bg-primary">
+      <main className="flex flex-col items-center justify-center h-screen bg-primary">
         {isProfile ? (
           <div className="mb-5">
             <h1 className="text-white text-2xl font-extrabold mb-5">
