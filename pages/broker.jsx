@@ -103,14 +103,14 @@ export default function Home() {
             >
               <Link
                 href={`/property/${item.data.id}`}
-                className=" border-2 border-black"
+                className=" border-2 border-black bg-secondary"
               >
                 <div className="bg-white rounded shadow p-4">
                   <h2 className="text-xl font-semibold mb-2">
                     #{item.data.id}
                   </h2>
                   <img
-                    className="w-full h-48 object-cover mb-4 rounded"
+                    className="w-full h-48 object-cover mb-4 rounded border border-black"
                     src={item.data.image_link}
                     alt={item.data.name}
                   />

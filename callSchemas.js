@@ -1,10 +1,11 @@
-console.log("hello");
+console.log("starting...");
 const axios = require("axios");
 
 // List all your API endpoints here
 const apiEndpoints = [
   "/api/schemas/UserSchema",
   "/api/schemas/PropertySchema",
+  "/api/schemas/NotificationSchema",
 
   // Add more endpoints as needed
 ];
@@ -18,6 +19,8 @@ async function callSchemas() {
     }
   } catch (error) {
     console.error("Error calling APIs:", error);
+  } finally {
+    console.log("All APIS called successfully! 📡  💻  🗂️");
   }
 }
 

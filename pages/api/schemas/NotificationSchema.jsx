@@ -8,21 +8,22 @@ export default async function handler(req, res) {
   if (req.method === "POST") {
     /* 
     Info: URL to the database
-    URL : /api/schemas/SampleSchema
+    URL : /api/schemas/UserSchema
     */
     const createResponse = await db.applySchema(`
       
       @public    
-      collection SampleCollection2 {
+      collection NotificationCollection {
         id: string;
-        name: string;
-        age: number;
+        buyer: string;
+        broker: string;
+        property_id: string;
         
 
-        constructor(id: string, name: string, age: number) {
+        constructor(id: string, buyer: string, broker: string, property_id: string) {
             this.id = id;
-            this.name = name;
-            this.age = age;
+            this.buyer = buyer;
+            this.broker = broker;
           
         }
       }
@@ -30,7 +31,9 @@ export default async function handler(req, res) {
 
     res
       .status(200)
-      .json({ message: "Database SampleCollections created successfully." });
+      .json({
+        message: "Database NotificationCollection created successfully.",
+      });
     console.log(res);
   } else {
     res.status(400).json({ message: "Invalid request method." });

@@ -12,6 +12,7 @@ export default function Home() {
   // Methods
   const [isProfile, setIsProfile] = useState(false);
   const [profileData, setProfileData] = useState({});
+  const [propertyData, setPropertyData] = useState([]);
 
   useEffect(() => {
     const getProfile = async () => {
@@ -33,6 +34,22 @@ export default function Home() {
     };
 
     getProfile();
+  }, [address]);
+
+  useEffect(() => {
+    const getProperty = async () => {
+      const propertyInfo = await db
+        .collection("PropertyCollection")
+        .where("broker", "==", address)
+        .get();
+      console.log(propertyInfo.data);
+      try {
+        setPropertyData(propertyInfo.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getProperty();
   }, [address]);
 
   const listOfPrperties = [
@@ -92,16 +109,46 @@ export default function Home() {
         )}
 
         <div className="flex flex-row">
-          {listOfPrperties.map((item, index) => (
+          {propertyData?.map((item, index) => (
             <div
               key={index}
               className="h-full mr-10 flex flex-col justify-center items-left"
             >
               <Link
-                href={`/property/${item.id}`}
-                className="font-extrabold text-5xl border-8 border-black p-5"
+                href={`/property/${item.data.id}`}
+                className=" border-2 border-black bg-secondary"
               >
-                {item.name}
+                <div className="bg-white rounded shadow p-4">
+                  <h2 className="text-xl font-semibold mb-2">
+                    #{item.data.id}
+                  </h2>
+                  <img
+                    className="w-full h-48 object-cover mb-4 rounded border border-black"
+                    src={item.data.image_link}
+                    alt={item.data.name}
+                  />
+                  <h2 className="text-xl font-semibold mb-2">
+                    {item.data.name}
+                  </h2>
+                  <p className="text-gray-600 mb-2">{item.data.location}</p>
+                  <div className="flex items-center mb-2">
+                    <p className="text-gray-800 mr-2">Price:</p>
+                    <p>{item.data.price}</p>
+                  </div>
+                  <div className="flex items-center mb-2">
+                    <p className="text-gray-800 font-bold mr-2">Bedrooms:</p>
+                    <p>{item.data.bedrooms}</p>
+                  </div>
+                  <div className="flex items-center mb-2">
+                    <p className="text-gray-800 font-bold mr-2">Bathrooms:</p>
+                    <p>{item.data.bathrooms}</p>
+                  </div>
+                  <div className="flex items-center mb-2">
+                    <p className="text-gray-800 font-bold mr-2">Garages:</p>
+                    <p>{item.data.garages}</p>
+                  </div>
+                  <p className="text-gray-800">{item.data.description}</p>
+                </div>
               </Link>
             </div>
           ))}
