@@ -90,7 +90,7 @@ export default function Home() {
             </div>
             <div className="flex flex-row mt-5">
               <Link
-                href="/premium/index"
+                href="/premium/main"
                 className="border-4 border-black p-3 bg-white mr-5 w-full text-center bg-secondary"
               >
                 Premium Listings
