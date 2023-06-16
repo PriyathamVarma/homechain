@@ -29,7 +29,8 @@ export default async function handler(req, res) {
         type: string;
         posted_on: string;
         
-
+        @index(price,location);
+        
         constructor(id: string, name: string, location: string, broker: string, price: number, image_link: string, address: string, area: number, bedrooms: number, bathrooms: number, garages: number, description: string, type: string, posted_on: string) {
           this.id = id;
           this.name = name;
