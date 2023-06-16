@@ -1,9 +1,11 @@
 // Imports
 import { useAddress } from "@thirdweb-dev/react";
 import db from "../polybase/config.jsx";
+import { useRouter } from "next/router.js";
 
 const CreateProfile = () => {
   const address = useAddress();
+  const router = useRouter();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -15,15 +17,21 @@ const CreateProfile = () => {
     const phone = e.target.phone.value;
     const id = Math.floor(Math.random() * 1000000000).toString();
 
-    db.collection("UserCollection").create([
-      id,
-      name,
-      address,
-      status,
-      location,
-      locAddress,
-      phone,
-    ]);
+    try {
+      db.collection("UserCollection").create([
+        id,
+        name,
+        address,
+        status,
+        location,
+        locAddress,
+        phone,
+      ]);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      router.back();
+    }
   };
 
   return (

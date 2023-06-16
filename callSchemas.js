@@ -13,7 +13,7 @@ const apiEndpoints = [
 async function callSchemas() {
   try {
     for (const endpoint of apiEndpoints) {
-      const response = await axios.post(`http://localhost:3001${endpoint}`);
+      const response = await axios.post(`http://localhost:3000${endpoint}`);
       console.log(`API called: ${endpoint}`);
       console.log(response.data); // Output or process the response data as needed
     }

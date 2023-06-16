@@ -25,6 +25,7 @@ export default function Home() {
               href="/broker"
               className="font-extrabold text-5xl border-8 border-black p-5"
             >
+              <Image src="/broker.png" width={200} height={200} />
               Broker
             </Link>
           </div>
@@ -34,6 +35,7 @@ export default function Home() {
               href="/buyer"
               className="font-extrabold text-5xl border-8 border-black p-5"
             >
+              <Image src="/buyer.png" width={200} height={200} />
               Buyer
             </Link>
           </div>

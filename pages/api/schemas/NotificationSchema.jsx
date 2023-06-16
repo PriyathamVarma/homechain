@@ -24,16 +24,15 @@ export default async function handler(req, res) {
             this.id = id;
             this.buyer = buyer;
             this.broker = broker;
+            this.property_id = property_id;
           
         }
       }
     `);
 
-    res
-      .status(200)
-      .json({
-        message: "Database NotificationCollection created successfully.",
-      });
+    res.status(200).json({
+      message: "Database NotificationCollection created successfully.",
+    });
     console.log(res);
   } else {
     res.status(400).json({ message: "Invalid request method." });
