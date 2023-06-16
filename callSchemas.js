@@ -6,6 +6,7 @@ const apiEndpoints = [
   "/api/schemas/UserSchema",
   "/api/schemas/PropertySchema",
   "/api/schemas/NotificationSchema",
+  "/api/schemas/SelledPropertiesSchema",
 
   // Add more endpoints as needed
 ];

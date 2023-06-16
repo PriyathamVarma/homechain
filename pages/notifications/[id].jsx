@@ -49,6 +49,16 @@ export default function Home() {
 
     const { data } = notificationDetails.data[0];
     console.log(data);
+
+    try {
+      const id = Math.floor(Math.random() * 1000000000).toString();
+      const selling = await db
+        .collection("SelledPropertiesCollection")
+        .create([id, data.buyer, data.broker, data.property_id]);
+      console.log(selling);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     const createResponse = await db.applySchema(`
       
       @public    
-      collection NotificationCollection {
+      collection SelledPropertiesCollection {
         id: string;
         buyer: string;
         broker: string;
@@ -31,7 +31,7 @@ export default async function handler(req, res) {
     `);
 
     res.status(200).json({
-      message: "Database NotificationCollection created successfully.",
+      message: "Database SelledPropertiesCollection created successfully.",
     });
     console.log(res);
   } else {
