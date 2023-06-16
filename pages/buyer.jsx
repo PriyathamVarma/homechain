@@ -12,6 +12,7 @@ export default function Home() {
   const [isProfile, setIsProfile] = useState(false);
   const [profileData, setProfileData] = useState({});
   const [propertyData, setPropertyData] = useState([]);
+  const [selledPropertyData, setSelledPropertyData] = useState([]);
 
   useEffect(() => {
     const getProfile = async () => {
@@ -51,26 +52,21 @@ export default function Home() {
     getProperty();
   }, [address]);
 
-  const listOfPrperties = [
-    {
-      id: "1",
-      name: "Property 1",
-      price: "100000",
-      location: "Location 1",
-      broker: "Broker 1",
-      buyer: "Buyer 1",
-      status: "Status 1",
-    },
-    {
-      id: "2",
-      name: "Property 2",
-      price: "200000",
-      location: "Location 2",
-      broker: "Broker 2",
-      buyer: "Buyer 2",
-      status: "Status 2",
-    },
-  ];
+  useEffect(() => {
+    const getProperty = async () => {
+      const propertyInfo = await db
+        .collection("SelledPropertiesCollection")
+        .where("buyer", "==", address)
+        .get();
+      console.log(propertyInfo.data);
+      try {
+        setSelledPropertyData(propertyInfo.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getProperty();
+  }, [address]);
 
   return (
     <div>
@@ -80,17 +76,25 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex flex-col items-center justify-center h-screen bg-primary">
+      <main className="flex flex-col items-center justify-center h-full bg-primary">
         {isProfile ? (
           <div className="mb-5">
             <h1 className="text-white text-2xl font-extrabold mb-5">
               HomeChain Buyer Profile
             </h1>
-            <div className="bg-white rounded shadow-lg border border-black p-4">
+            <div className="bg-secondary rounded shadow-lg border-2 border-black p-4">
               <h2 className="text-xl font-bold mb-2">{profileData.name}</h2>
               <p className="text-gray-600 mb-2">@{profileData.location}</p>
               <p className="text-gray-600 mb-2">{profileData.email}</p>
               <p className="text-gray-800">{profileData.phoneNumber}</p>
+            </div>
+            <div className="flex flex-row mt-5">
+              <Link
+                href="/premium/index"
+                className="border-4 border-black p-3 bg-white mr-5 w-full text-center bg-secondary"
+              >
+                Premium Listings
+              </Link>
             </div>
           </div>
         ) : (
@@ -106,7 +110,31 @@ export default function Home() {
             </Link>
           </div>
         )}
-
+        <hr />
+        <h1 className="text-white text-2xl font-extrabold mb-5">
+          HomeChain Buyer Properties
+        </h1>
+        <div className="flex flex-row">
+          {selledPropertyData?.map((item, index) => (
+            <div
+              key={index}
+              className="h-full mr-10 flex flex-col justify-center items-left"
+            >
+              <Link
+                href={`/property/${item.data.property_id}`}
+                className=" border-2 border-black bg-secondary"
+              >
+                <div className="bg-white rounded shadow p-4">
+                  <h2 className="text-xl font-semibold">#{item.data.id}</h2>
+                </div>
+              </Link>
+            </div>
+          ))}
+        </div>
+        <hr />
+        <h1 className="text-white text-2xl font-extrabold mb-5">
+          Other Properties
+        </h1>
         <div className="flex flex-row">
           {propertyData?.map((item, index) => (
             <div
