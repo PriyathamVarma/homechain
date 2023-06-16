@@ -78,6 +78,12 @@ export default function Home() {
               >
                 + Add Property
               </Link>
+              <Link
+                href={`/notifications/${address}`}
+                className="border-4 border-black p-3 bg-white"
+              >
+                Notifications
+              </Link>
             </div>
           </div>
         ) : (

@@ -57,12 +57,14 @@ export default function Home() {
     getProfile();
   }, [address]);
 
+  const [isNotified, setIsNotified] = useState(false);
   // Methods
   const buttonClicked = async () => {
     const id = Math.floor(Math.random() * 1000000000).toString();
     const propertyInfo = await db
       .collection("NotificationCollection")
       .create([id, address, property.broker, property.id]);
+    setIsNotified(true);
     console.log(propertyInfo);
   };
 
@@ -87,12 +89,20 @@ export default function Home() {
               onClick={buttonClicked}
               className="text-white text-2xl font-extrabold mb-5 border border-secondary p-2 bg-secondary"
             >
-              Buy
+              {isNotified ? (
+                <p className="text-white text-2xl font-extrabold mb-5">
+                  Notified
+                </p>
+              ) : (
+                <p className="text-white text-2xl font-extrabold mb-5">Buy</p>
+              )}
             </button>
           </div>
         ) : (
           <div className="mb-5">
-            <h1 className="text-white text-2xl font-extrabold mb-5">False</h1>
+            <h1 className="text-white text-2xl font-extrabold mb-5">
+              No Account Profile
+            </h1>
           </div>
         )}
 
